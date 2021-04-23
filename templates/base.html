@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/CSS/style.css">
+    <title>{{title}}</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/">Главная страница</a>
+        <a href="">Таблицы</a>
+        <a href="">Матчи</a>
+        {% if current_user.is_authenticated %}
+            <a href="/search_articles">Поиск статей</a>
+            <a href="news">Написать статью</a>
+            <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+        {% else %}
+            <p>
+                <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+                <a class="btn btn-success" href="/login">Войти</a>
+            </p>
+        {% endif %}
+    </nav>
+</header>
+<!-- Begin page content -->
+<main role="main" style="padding-left: 3%; padding-right: 2%">
+    <h1 style="margin-left: 20%">Новости футбола</h1>
+    <div style="display: flex; justify-content: space-between">
+        <div style="width : 10%">
+            <h2 style="font-size: 30px">Меню</h2>
+            <br>
+            <br>
+            <a href="">Таблицы</a>
+            <br>
+            <br>
+            <a href="">Матчи</a>
+            <br>
+            <br>
+            {% if current_user.is_authenticated %}
+            <a href="/search_articles">Поиск статей</a>
+            <br>
+            <br>
+            <a href="news">Написать статью</a>
+            {% endif %}
+        </div>
+        <div style="width : 100%; text-align: left; margin-left: 1%">
+            {% block content %}{% endblock %}
+        </div>
+        <div style="width : 30%; margin-left: 1%"> <h2 style="font-size: 30px">Здесь могла быть ваша реклама</h2></div>
+    </div>
+</main>
+</body>
+</html>

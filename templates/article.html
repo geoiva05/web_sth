@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="margin-left: 20%"> {{ title }}</h2>
+<div style="width : 100%; text-align: left; margin-left: 1%">
+    {{ content }}
+    <br>
+    {% if current_user.is_authenticated and current_user.id == user %}
+    <div>
+        <a href="/news/{{ id }}" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/news_delete/{{ id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

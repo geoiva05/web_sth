@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for item in news%}
+<div class="col-md6 border rounded">
+    <div>
+        <a class="btn btn-success" href="/article/{{ item.id }}/{{ item.title }}/{{ item.content }}/{{ item.user }}">{{
+            item.title }}</a>
+        {{ item.description }}
+        {% if current_user.is_authenticated and current_user == item.user %}
+        <div>
+            <a href="/news/{{ item.id }}" class="btn btn-warning">
+                Изменить
+            </a>
+            <a href="/news_delete/{{ item.id }}" class="btn btn-danger">
+                Удалить
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
