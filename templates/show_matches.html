@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{ name }} 2021 Matchday: {{ tour }} </h1>
+
+<div class="col-md6 border rounded">
+    <div style="display: flex; justify-content: space-between">
+        <div style="width : 20%">Дата</div>
+        <div style="width : 60%">Матч</div>
+        <div style="width : 20%">Счёт</div>
+    </div>
+    {% for item in matches%}
+    <div style="display: flex; justify-content: space-between">
+        <div style="width : 20%">{{ item['utcDate'] }}</div>
+        <div style="width : 60%">{{ item['homeTeam']['name'] }} : {{ item['awayTeam']['name'] }}</div>
+        {% if score %}
+            <div style="width : 20%">{{ item['score']['fullTime']['homeTeam'] }}:{{ item['score']['fullTime']['awayTeam'] }}</div>
+        {% else %}
+            <div style="width : 20%">Матч ещё не начался</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

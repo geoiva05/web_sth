@@ -1,3 +1,6 @@
+import http.client
+import json
+
 from flask import Flask
 from flask import redirect
 from flask import request
@@ -10,6 +13,7 @@ from flask_login import logout_user
 from flask_login import login_required
 from flask_login import current_user
 
+from forms.toures_form import toures_form
 from forms.user import RegisterForm
 from forms.LoginForm import LoginForm
 from forms.news import NewsForm
@@ -69,6 +73,323 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
+@app.route('/table_EPL', methods=['GET', 'POST'])
+def show_table_EPL():
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+    connection.request('GET', '/v2/competitions/PL/standings', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    table = response['standings'][0]['table']
+    return render_template("show_table.html", table=table, name=response['competition']['name'])
+
+
+@app.route("/matches_toures_EPL", methods=['GET', 'POST'])
+def show_toures_EPL():
+    form = toures_form()
+    if form.validate_on_submit():
+        if int(form.tour.data) in range(1, 39):
+            connection = http.client.HTTPConnection('api.football-data.org')
+            headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+            connection.request('GET', f"/v2/competitions/PL/matches?matchday={form.tour.data}", None, headers)
+            response = json.loads(connection.getresponse().read().decode())
+            matches = response['matches']
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = str(matches[i]['utcDate'])
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = matches[i]['utcDate'][8:10] + '.' + matches[i]['utcDate'][5:7] + '.' + \
+                                        matches[i]['utcDate'][:4] + ' ' + matches[i]['utcDate'][11:16]
+            if int(form.tour.data) <= matches[0]['season']['currentMatchday']:
+                show_score = True
+            else:
+                show_score = False
+            print(show_score)
+            return render_template("show_matches.html", matches=matches, name=response['competition']['name'],
+                                   tour=form.tour.data, score=show_score)
+        else:
+            return render_template('toures_form.html',
+                                   message="Нет тура с таким номером",
+                                   form=form)
+    return render_template('toures_form.html', title='Поиск статей', form=form)
+
+
+@app.route("/matches_toures_PD", methods=['GET', 'POST'])
+def show_toures_PD():
+    form = toures_form()
+    if form.validate_on_submit():
+        if int(form.tour.data) in range(1, 39):
+            connection = http.client.HTTPConnection('api.football-data.org')
+            headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+            connection.request('GET', f"/v2/competitions/PD/matches?matchday={form.tour.data}", None, headers)
+            response = json.loads(connection.getresponse().read().decode())
+            matches = response['matches']
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = str(matches[i]['utcDate'])
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = matches[i]['utcDate'][8:10] + '.' + matches[i]['utcDate'][5:7] + '.' + \
+                                        matches[i]['utcDate'][:4] + ' ' + matches[i]['utcDate'][11:16]
+            if int(form.tour.data) <= matches[0]['season']['currentMatchday']:
+                show_score = True
+            else:
+                show_score = False
+            print(show_score)
+            return render_template("show_matches.html", matches=matches, name=response['competition']['name'],
+                                   tour=form.tour.data, score=show_score)
+        else:
+            return render_template('toures_form.html',
+                                   message="Нет тура с таким номером",
+                                   form=form)
+    return render_template('toures_form.html', title='Поиск статей', form=form)
+
+
+@app.route("/matches_toures_BL1", methods=['GET', 'POST'])
+def show_toures_BL1():
+    form = toures_form()
+    if form.validate_on_submit():
+        if int(form.tour.data) in range(1, 35):
+            connection = http.client.HTTPConnection('api.football-data.org')
+            headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+            connection.request('GET', f"/v2/competitions/BL1/matches?matchday={form.tour.data}", None, headers)
+            response = json.loads(connection.getresponse().read().decode())
+            matches = response['matches']
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = str(matches[i]['utcDate'])
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = matches[i]['utcDate'][8:10] + '.' + matches[i]['utcDate'][5:7] + '.' + \
+                                        matches[i]['utcDate'][:4] + ' ' + matches[i]['utcDate'][11:16]
+            if int(form.tour.data) <= matches[0]['season']['currentMatchday']:
+                show_score = True
+            else:
+                show_score = False
+            print(show_score)
+            return render_template("show_matches.html", matches=matches, name=response['competition']['name'],
+                                   tour=form.tour.data, score=show_score)
+        else:
+            return render_template('toures_form.html',
+                                   message="Нет тура с таким номером",
+                                   form=form)
+    return render_template('toures_form.html', title='Поиск статей', form=form)
+
+
+@app.route("/matches_toures_SA", methods=['GET', 'POST'])
+def show_toures_SA():
+    form = toures_form()
+    if form.validate_on_submit():
+        if int(form.tour.data) in range(1, 39):
+            connection = http.client.HTTPConnection('api.football-data.org')
+            headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+            connection.request('GET', f"/v2/competitions/SA/matches?matchday={form.tour.data}", None, headers)
+            response = json.loads(connection.getresponse().read().decode())
+            matches = response['matches']
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = str(matches[i]['utcDate'])
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = matches[i]['utcDate'][8:10] + '.' + matches[i]['utcDate'][5:7] + '.' + \
+                                        matches[i]['utcDate'][:4] + ' ' + matches[i]['utcDate'][11:16]
+            if int(form.tour.data) <= matches[0]['season']['currentMatchday']:
+                show_score = True
+            else:
+                show_score = False
+            print(show_score)
+            return render_template("show_matches.html", matches=matches, name=response['competition']['name'],
+                                   tour=form.tour.data, score=show_score)
+        else:
+            return render_template('toures_form.html',
+                                   message="Нет тура с таким номером",
+                                   form=form)
+    return render_template('toures_form.html', title='Поиск статей', form=form)
+
+
+@app.route("/matches_toures_FL1", methods=['GET', 'POST'])
+def show_toures_FL1():
+    form = toures_form()
+    if form.validate_on_submit():
+        if int(form.tour.data) in range(1, 39):
+            connection = http.client.HTTPConnection('api.football-data.org')
+            headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+            connection.request('GET', f"/v2/competitions/FL1/matches?matchday={form.tour.data}", None, headers)
+            response = json.loads(connection.getresponse().read().decode())
+            matches = response['matches']
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = str(matches[i]['utcDate'])
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = matches[i]['utcDate'][8:10] + '.' + matches[i]['utcDate'][5:7] + '.' + \
+                                        matches[i]['utcDate'][:4] + ' ' + matches[i]['utcDate'][11:16]
+            if int(form.tour.data) <= matches[0]['season']['currentMatchday']:
+                show_score = True
+            else:
+                show_score = False
+            print(show_score)
+            return render_template("show_matches.html", matches=matches, name=response['competition']['name'],
+                                   tour=form.tour.data, score=show_score)
+        else:
+            return render_template('toures_form.html',
+                                   message="Нет тура с таким номером",
+                                   form=form)
+    return render_template('toures_form.html', title='Поиск статей', form=form)
+
+
+@app.route("/matches_toures_BSA", methods=['GET', 'POST'])
+def show_toures_BSA():
+    form = toures_form()
+    if form.validate_on_submit():
+        if int(form.tour.data) in range(1, 39):
+            connection = http.client.HTTPConnection('api.football-data.org')
+            headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+            connection.request('GET', f"/v2/competitions/BSA/matches?matchday={form.tour.data}", None, headers)
+            response = json.loads(connection.getresponse().read().decode())
+            matches = response['matches']
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = str(matches[i]['utcDate'])
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = matches[i]['utcDate'][8:10] + '.' + matches[i]['utcDate'][5:7] + '.' + \
+                                        matches[i]['utcDate'][:4] + ' ' + matches[i]['utcDate'][11:16]
+            if int(form.tour.data) <= matches[0]['season']['currentMatchday']:
+                show_score = True
+            else:
+                show_score = False
+            print(show_score)
+            return render_template("show_matches.html", matches=matches, name=response['competition']['name'],
+                                   tour=form.tour.data, score=show_score)
+        else:
+            return render_template('toures_form.html',
+                                   message="Нет тура с таким номером",
+                                   form=form)
+    return render_template('toures_form.html', title='Поиск статей', form=form)
+
+
+@app.route("/matches_toures_DED", methods=['GET', 'POST'])
+def show_toures_DED():
+    form = toures_form()
+    if form.validate_on_submit():
+        if int(form.tour.data) in range(1, 35):
+            connection = http.client.HTTPConnection('api.football-data.org')
+            headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+            connection.request('GET', f"/v2/competitions/DED/matches?matchday={form.tour.data}", None, headers)
+            response = json.loads(connection.getresponse().read().decode())
+            matches = response['matches']
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = str(matches[i]['utcDate'])
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = matches[i]['utcDate'][8:10] + '.' + matches[i]['utcDate'][5:7] + '.' + \
+                                        matches[i]['utcDate'][:4] + ' ' + matches[i]['utcDate'][11:16]
+            if int(form.tour.data) <= matches[0]['season']['currentMatchday']:
+                show_score = True
+            else:
+                show_score = False
+            print(show_score)
+            return render_template("show_matches.html", matches=matches, name=response['competition']['name'],
+                                   tour=form.tour.data, score=show_score)
+        else:
+            return render_template('toures_form.html',
+                                   message="Нет тура с таким номером",
+                                   form=form)
+    return render_template('toures_form.html', title='Поиск статей', form=form)
+
+
+@app.route("/matches_toures_PPL", methods=['GET', 'POST'])
+def show_toures_PPL():
+    form = toures_form()
+    if form.validate_on_submit():
+        if int(form.tour.data) in range(1, 35):
+            connection = http.client.HTTPConnection('api.football-data.org')
+            headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+            connection.request('GET', f"/v2/competitions/PPL/matches?matchday={form.tour.data}", None, headers)
+            response = json.loads(connection.getresponse().read().decode())
+            matches = response['matches']
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = str(matches[i]['utcDate'])
+            for i in range(len(matches)):
+                matches[i]['utcDate'] = matches[i]['utcDate'][8:10] + '.' + matches[i]['utcDate'][5:7] + '.' + \
+                                        matches[i]['utcDate'][:4] + ' ' + matches[i]['utcDate'][11:16]
+            if int(form.tour.data) <= matches[0]['season']['currentMatchday']:
+                show_score = True
+            else:
+                show_score = False
+            print(show_score)
+            return render_template("show_matches.html", matches=matches, name=response['competition']['name'],
+                                   tour=form.tour.data, score=show_score)
+        else:
+            return render_template('toures_form.html',
+                                   message="Нет тура с таким номером",
+                                   form=form)
+    return render_template('toures_form.html', title='Поиск статей', form=form)
+
+
+@app.route('/table_BL1', methods=['GET', 'POST'])
+def show_table_BL1():
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+    connection.request('GET', '/v2/competitions/BL1/standings', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    table = response['standings'][0]['table']
+    return render_template("show_table.html", table=table, name=response['competition']['name'])
+
+
+@app.route('/table_FL1', methods=['GET', 'POST'])
+def show_table_FL1():
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+    connection.request('GET', '/v2/competitions/FL1/standings', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    table = response['standings'][0]['table']
+    return render_template("show_table.html", table=table, name=response['competition']['name'])
+
+
+@app.route('/table_BSA', methods=['GET', 'POST'])
+def show_table_BSA():
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+    connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    table = response['standings'][0]['table']
+    return render_template("show_table.html", table=table, name=response['competition']['name'])
+
+
+@app.route('/table_DED', methods=['GET', 'POST'])
+def show_table_DED():
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+    connection.request('GET', '/v2/competitions/DED/standings', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    table = response['standings'][0]['table']
+    return render_template("show_table.html", table=table, name=response['competition']['name'])
+
+
+@app.route('/table_PPL', methods=['GET', 'POST'])
+def show_table_PPL():
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+    connection.request('GET', '/v2/competitions/PPL/standings', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    table = response['standings'][0]['table']
+    return render_template("show_table.html", table=table, name=response['competition']['name'])
+
+
+@app.route('/table_PD', methods=['GET', 'POST'])
+def show_table_PD():
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+    connection.request('GET', '/v2/competitions/PD/standings', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    table = response['standings'][0]['table']
+    return render_template("show_table.html", table=table, name=response['competition']['name'])
+
+
+@app.route('/table_SA', methods=['GET', 'POST'])
+def show_table_SA():
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': 'a80b321e968a4931b45430b943db2a29'}
+    connection.request('GET', '/v2/competitions/SA/standings', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    table = response['standings'][0]['table']
+    return render_template("show_table.html", table=table, name=response['competition']['name'])
+
+
+@app.route('/leagues', methods=['GET', 'POST'])
+def show_leagues():
+    return render_template("matches.html")
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -84,13 +405,18 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
+@app.route('/tables', methods=['GET', 'POST'])
+def chose_league():
+    return render_template('tables.html')
+
+
 @app.route('/search_articles', methods=['GET', 'POST'])
 def search_articles():
     form = SearchArticlesForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         news = db_sess.query(News).filter(
-             form.theme.data == News.title).all()
+            form.theme.data == News.title).all()
         return render_template("found_articles.html", news=news)
     return render_template('search_articles.html', title='Поиск статей', form=form)
 

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{ name }} 2021 </h1>
+
+<div class="col-md6 border rounded">
+    <div style="display: flex; justify-content: space-between">
+        <div style="width : 5%">Место</div>
+        <div style="width : 20%">Название</div>
+        <div style="width : 10%">Игр сыграно</div>
+        <div style="width : 5%">Побед</div>
+        <div style="width : 10%">Ничьих</div>
+        <div style="width : 10%">Поражений</div>
+        <div style="width : 10%">Голов Забито</div>
+        <div style="width : 10%">Голов Пропущено</div>
+        <div style="width : 10%">Разница Мячей</div>
+        <div style="width : 10%">Очков</div>
+    </div>
+    {% for item in table%}
+    <div style="display: flex; justify-content: space-between">
+        <div style="width : 5%">{{ item['position'] }}</div>
+        <div style="width : 20%">{{ item['team']['name'] }}</div>
+        <div style="width : 10%">{{ item['playedGames'] }}</div>
+        <div style="width : 5%">{{ item['won'] }}</div>
+        <div style="width : 10%">{{ item['draw'] }}</div>
+        <div style="width : 10%">{{ item['lost'] }}</div>
+        <div style="width : 10%">{{ item['goalsFor'] }}</div>
+        <div style="width : 10%">{{ item['goalsAgainst'] }}</div>
+        <div style="width : 10%">{{ item['goalDifference'] }}</div>
+        <div style="width : 10%">{{ item['points'] }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

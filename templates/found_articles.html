@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<h1 style="margin-left: 20%">Новости футбола</h1>
+
 <h2>Найденные статьи</h2>
+
 {% for item in news%}
+
 <div class="col-md6 border rounded">
     <div>
         <a class="btn btn-success" href="/article/{{ item.id }}/{{ item.title }}/{{ item.content }}/{{ item.user }}">{{
@@ -20,6 +25,7 @@
         {% endif %}
     </div>
 </div>
+
 {% endfor %}
 
 {% endblock %}
